@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toStringJoiner;
@@ -70,7 +71,16 @@ public class ReductionTest {
     public void testDoublingNumbersAndCollectingIntoList() {
         List<Integer> doubled = _numbers.stream()
                 .map((Function<? super Integer, ? extends Integer>) value -> value * 2)
-                .collect(toList());
-        System.out.println("doubled = " + doubled);
+//                .map(value -> value * 2)
+                .collect(Collectors.<Integer>toList());
+        assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
+    }
+
+    @Test
+    public void testFilteringEvenNumbersAndCollectingIntoList() {
+        List<Integer> evens = _numbers.stream()
+                .filter(value -> value % 2 == 0)
+                .collect(Collectors.<Integer>toList());
+        assertThat(evens, is(Arrays.asList(2, 4, 6, 8, 10)));
     }
 }

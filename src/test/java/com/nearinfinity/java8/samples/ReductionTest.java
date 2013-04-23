@@ -47,4 +47,13 @@ public class ReductionTest {
         String joinedLowerCaseNames = names.toString();
         assertThat(joinedLowerCaseNames, is("bob, tom, jeff, scott, jennifer, steve"));
     }
+
+    @Test
+    public void testGreetEachNameAndCollectIntoNewList() {
+        List<String> greetings = _names.stream()
+                .map(name -> "Hello " + name)
+                .collect(toList());
+        assertThat(greetings, is(Arrays.asList(
+                "Hello Bob", "Hello Tom", "Hello Jeff", "Hello Scott", "Hello Jennifer", "Hello Steve")));
+    }
 }

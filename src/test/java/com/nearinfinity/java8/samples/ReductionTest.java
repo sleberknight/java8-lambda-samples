@@ -3,11 +3,12 @@ package com.nearinfinity.java8.samples;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toStringJoiner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -38,5 +39,12 @@ public class ReductionTest {
         Optional<String> longestName = _names.stream().reduce((name1, name2) ->
             name1.length() >= name2.length() ? name1 : name2);
         assertThat(longestName.get(), is("Jennifer"));
+    }
+
+    @Test
+    public void testReducingNamesWithToStringJoinerCollector() {
+        StringJoiner names = _names.stream().map(String::toLowerCase).collect(toStringJoiner(", "));
+        String joinedLowerCaseNames = names.toString();
+        assertThat(joinedLowerCaseNames, is("bob, tom, jeff, scott, jennifer, steve"));
     }
 }

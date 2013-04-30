@@ -69,22 +69,39 @@ public class ReductionTest {
         assertThat(doubled, is(new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18, 20}));
     }
 
-    // TODO Doesn't seem right to have to cast like below in order to make it work, but if
-    //      don't do cast I get a compilation error at the moment. Must be something I don't know...
+    /**
+     * From Venkat, the overloaded map() method in Stream causes some issues dealing with
+     * casts. One way to avoid this is to declare a Function separately and pass that to
+     * map().
+     */
     @Test
-    public void testDoublingNumbersAndCollectingIntoList() {
+    public void testDoublingNumbersAndCollectingIntoList_UsingSeparateFunctionForMap() {
+        Function<Integer, Integer> lambda = value -> value * 2;
         List<Integer> doubled = _numbers.stream()
-                .map((Function<? super Integer, ? extends Integer>) value -> value * 2)
-//                .map(value -> value * 2)
-                .collect(Collectors.<Integer>toList());
+                .map(lambda)
+                .collect(toList());
         assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
+    }
+
+    /**
+     * Venkat's second tip is, instead of having a separate Function object for the lambda,
+     * to use the boxed() method to convert from IntStream back to Stream, from which we
+     * can then call collect(toList()) without issue.
+     */
+    @Test
+    public void testDoublingNumbersAndCollectingIntoList_UsingBoxedMethodFromIntStream() {
+        List<Integer> doubled = _numbers.stream()
+                        .map(value -> value * 2)
+                        .boxed()
+                        .collect(toList());
+                assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
     }
 
     @Test
     public void testFilteringEvenNumbersAndCollectingIntoList() {
         List<Integer> evens = _numbers.stream()
                 .filter(value -> value % 2 == 0)
-                .collect(Collectors.<Integer>toList());
+                .collect(toList());
         assertThat(evens, is(Arrays.asList(2, 4, 6, 8, 10)));
     }
 }

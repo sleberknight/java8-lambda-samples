@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.StringJoiner;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toStringJoiner;

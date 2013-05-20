@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -36,7 +37,25 @@ public class OptionalTest {
     public void testOptional_IfPresent() {
         List<Integer> results = new ArrayList<>();
         Optional<Integer> second= Optional.of(3);
-        second.ifPresent(value -> results.add(value));  // must  operate via side-effects, unfortunately...
+        second.ifPresent(value -> results.add(value));  // must operate via side-effects, unfortunately...
         assertThat(results, is(Arrays.asList(3)));
+    }
+
+    @Test
+    public void testOptional_OrElse() {
+        Optional<Integer> o = Optional.empty();
+        assertThat(o.orElse(42), is(42));
+    }
+
+    @Test
+    public void testOptional_Get() {
+        Optional<Integer> o = Optional.of(42);
+        assertThat(o.get(), is(42));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testOptional_Get_WhenNoValue() {
+        Optional<Integer> o = Optional.empty();
+        o.get();
     }
 }

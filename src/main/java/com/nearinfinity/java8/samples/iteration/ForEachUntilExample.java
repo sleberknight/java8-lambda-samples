@@ -18,6 +18,6 @@ public class ForEachUntilExample {
         numbers.stream().forEachUntil(value -> {
             System.out.println(value);
             if (value >= 6) stopCondition.set(true);
-        }, () -> stopCondition.get());
+        }, stopCondition::get);
     }
 }

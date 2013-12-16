@@ -37,7 +37,7 @@ public class OptionalTest {
     public void testOptional_IfPresent() {
         List<Integer> results = new ArrayList<>();
         Optional<Integer> second= Optional.of(3);
-        second.ifPresent(value -> results.add(value));  // must operate via side-effects, unfortunately...
+        second.ifPresent(results::add);  // must operate via side-effects, unfortunately...
         assertThat(results, is(Arrays.asList(3)));
     }
 

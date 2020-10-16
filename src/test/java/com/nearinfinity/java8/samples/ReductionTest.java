@@ -1,5 +1,10 @@
 package com.nearinfinity.java8.samples;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.is;
+
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,13 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
-import java.util.StringJoiner;
 import java.util.function.Function;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toStringJoiner;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ReductionTest {
 
@@ -28,27 +27,26 @@ public class ReductionTest {
 
     @Test
     public void testSumOfSquaresReducer() {
-        assertThat(_numbers.stream().map(value -> value * value).sum(), is(385L));
+        MatcherAssert.assertThat(_numbers.stream().mapToInt(value -> value * value).sum(), is(385));
     }
 
     @Test
     public void testAverageOfSquaresReducer() {
-        OptionalDouble result = _numbers.stream().map(value -> value * value).average();
-        assertThat(result.getAsDouble(), is(38.5));
+        OptionalDouble result = _numbers.stream().mapToDouble(value -> value * value).average();
+        MatcherAssert.assertThat(result.orElse(-1.0), is(38.5));
     }
 
     @Test
     public void testFindLongestNameReducer() {
         Optional<String> longestName = _names.stream().reduce((name1, name2) ->
                 name1.length() >= name2.length() ? name1 : name2);
-        assertThat(longestName.get(), is("Jennifer"));
+        MatcherAssert.assertThat(longestName.orElse("Alexa"), is("Jennifer"));
     }
 
     @Test
     public void testReducingNamesWithToStringJoinerCollector() {
-        StringJoiner names = _names.stream().map(String::toLowerCase).collect(toStringJoiner(", "));
-        String joinedLowerCaseNames = names.toString();
-        assertThat(joinedLowerCaseNames, is("bob, tom, jeff, scott, jennifer, steve"));
+        String joinedLowerCaseNames = _names.stream().map(String::toLowerCase).collect(joining(", "));
+        MatcherAssert.assertThat(joinedLowerCaseNames, is("bob, tom, jeff, scott, jennifer, steve"));
     }
 
     @Test
@@ -56,16 +54,16 @@ public class ReductionTest {
         List<String> greetings = _names.stream()
                 .map(name -> "Hello " + name)
                 .collect(toList());
-        assertThat(greetings, is(Arrays.asList(
+        MatcherAssert.assertThat(greetings, is(Arrays.asList(
                 "Hello Bob", "Hello Tom", "Hello Jeff", "Hello Scott", "Hello Jennifer", "Hello Steve")));
     }
 
     @Test
     public void testDoublingNumbersAndTurningIntoArray() {
-        int[] doubled = _numbers.stream()
+        Integer[] doubled = _numbers.stream()
                 .map(value -> value * 2)
-                .toArray();
-        assertThat(doubled, is(new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18, 20}));
+                .toArray(Integer[]::new);
+        MatcherAssert.assertThat(doubled, is(new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18, 20}));
     }
 
     /**
@@ -79,21 +77,23 @@ public class ReductionTest {
         List<Integer> doubled = _numbers.stream()
                 .map(lambda)
                 .collect(toList());
-        assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
+        MatcherAssert.assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
     }
 
     /**
      * Venkat's second tip is, instead of having a separate Function object for the lambda,
      * to use the boxed() method to convert from IntStream back to Stream, from which we
      * can then call collect(toList()) without issue.
+     * <p>
+     * UPDATE 2020-10-16: This tip is no longer necessary in the final JDK 8 version.
      */
     @Test
     public void testDoublingNumbersAndCollectingIntoList_UsingBoxedMethodFromIntStream() {
         List<Integer> doubled = _numbers.stream()
-                        .map(value -> value * 2)
-                        .boxed()
-                        .collect(toList());
-                assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
+                .map(value -> value * 2)
+//                .boxed()
+                .collect(toList());
+        MatcherAssert.assertThat(doubled, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
     }
 
     @Test
@@ -101,6 +101,6 @@ public class ReductionTest {
         List<Integer> evens = _numbers.stream()
                 .filter(value -> value % 2 == 0)
                 .collect(toList());
-        assertThat(evens, is(Arrays.asList(2, 4, 6, 8, 10)));
+        MatcherAssert.assertThat(evens, is(Arrays.asList(2, 4, 6, 8, 10)));
     }
 }

@@ -39,8 +39,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <verbose>true</verbose>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>8</source>
+                    <target>8</target>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>

@@ -1,15 +1,14 @@
 package com.nearinfinity.java8.samples;
 
+import static org.hamcrest.CoreMatchers.is;
+
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class StringJoinerTest {
 
@@ -22,13 +21,12 @@ public class StringJoinerTest {
 
     @Test
     public void testStringJoin() {
-        assertThat(String.join(", ", _fruits), is("Apple, Orange, Banana, Guava"));
+        MatcherAssert.assertThat(String.join(", ", _fruits), is("Apple, Orange, Banana, Guava"));
     }
 
     @Test
     public void testToStringJoiner() {
-        StringJoiner joiner = _fruits.stream().map(String::toUpperCase).collect(Collectors.toStringJoiner(", "));
-        String upperCasedFruits = joiner.toString();
-        assertThat(upperCasedFruits, is("APPLE, ORANGE, BANANA, GUAVA"));
+        String upperCasedFruits = _fruits.stream().map(String::toUpperCase).collect(Collectors.joining(", "));
+        MatcherAssert.assertThat(upperCasedFruits, is("APPLE, ORANGE, BANANA, GUAVA"));
     }
 }

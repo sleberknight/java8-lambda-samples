@@ -1,5 +1,5 @@
 target
 .idea
 .DS_Store
-zookeeper-samples.i*
+java8-lambda-samples.iml
 

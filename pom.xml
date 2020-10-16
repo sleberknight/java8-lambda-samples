@@ -8,6 +8,11 @@
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -15,13 +20,6 @@
             <artifactId>guava</artifactId>
             <version>14.0.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>net.sourceforge.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>1.3.7</version>
-        </dependency>
-
 
         <!-- Test dependencies -->
         <dependency>
@@ -37,6 +35,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <verbose>true</verbose>
                     <source>8</source>
@@ -47,6 +46,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>

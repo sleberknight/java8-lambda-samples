@@ -1,6 +1,9 @@
 package com.nearinfinity.java8.samples;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import com.google.common.collect.Lists;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class TransformationTest {
 
@@ -41,11 +41,11 @@ public class TransformationTest {
     public void testMappingTransformation_UsingMethodReference() {
         Iterator<String> iter = _fruits.stream().map(String::toUpperCase).iterator();
         List<String> upCaseFruits = Lists.newArrayList(iter);
-        assertThat(upCaseFruits, is(Arrays.asList("APPLE", "ORANGE", "PEAR", "BANANA", "GUAVA", "CLEMENTINE")));
+        MatcherAssert.assertThat(upCaseFruits, is(Arrays.asList("APPLE", "ORANGE", "PEAR", "BANANA", "GUAVA", "CLEMENTINE")));
     }
 
     private void assertDoubledNumbers(List<Integer> doubledNumbers) {
-        assertThat(doubledNumbers, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
+        MatcherAssert.assertThat(doubledNumbers, is(Arrays.asList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)));
     }
 
 }

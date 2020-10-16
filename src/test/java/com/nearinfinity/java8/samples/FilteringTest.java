@@ -1,6 +1,9 @@
 package com.nearinfinity.java8.samples;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import com.google.common.collect.Lists;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,9 +15,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class FilteringTest {
 
@@ -31,7 +31,7 @@ public class FilteringTest {
     public void testFilter_Simple() {
         Iterator<Integer> iter = _numbers.stream().filter(value -> value % 2 == 0).iterator();
         ArrayList<Integer> evens = Lists.newArrayList(iter);
-        assertThat(evens, is(Arrays.asList(2, 4, 6, 8, 10)));
+        MatcherAssert.assertThat(evens, is(Arrays.asList(2, 4, 6, 8, 10)));
     }
 
     @Test
@@ -41,23 +41,23 @@ public class FilteringTest {
 
         Iterator<String> jIterator = _names.stream().filter(startsWithLetter.apply("J")).iterator();
         List<String> jNames = Lists.newArrayList(jIterator);
-        assertThat(jNames, is(Arrays.asList("Jeff", "Jennifer")));
+        MatcherAssert.assertThat(jNames, is(Arrays.asList("Jeff", "Jennifer")));
     }
 
     @Test
     public void testFindFirst_WhenExists() {
         Optional<String> firstS =
                 _names.stream().filter(name -> name.startsWith("S")).findFirst();
-        assertThat(firstS.isPresent(), is(true));
-        assertThat(firstS.get(), is("Scott"));
+        MatcherAssert.assertThat(firstS.isPresent(), is(true));
+        MatcherAssert.assertThat(firstS.get(), is("Scott"));
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testFindFirst_WhenDoesNotExist() {
         Optional<String> firstZ =
                 _names.stream().filter(name -> name.startsWith("Z")).findFirst();
-        assertThat(firstZ.isPresent(), is(false));
-        assertThat(firstZ.orElse("Nope"), is("Nope"));
+        MatcherAssert.assertThat(firstZ.isPresent(), is(false));
+        MatcherAssert.assertThat(firstZ.orElse("Nope"), is("Nope"));
         firstZ.get();
     }
 

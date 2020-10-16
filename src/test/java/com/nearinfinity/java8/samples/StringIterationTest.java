@@ -1,13 +1,13 @@
 package com.nearinfinity.java8.samples;
 
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.is;
+
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class StringIterationTest {
 
@@ -16,9 +16,9 @@ public class StringIterationTest {
         String s = "R2D2C3P0";
         List<Character> result = s.chars()
                 .filter(Character::isDigit)
-                .map(ch -> Character.valueOf((char) ch))
+                .mapToObj(ch -> (char) ch)
                 .collect(toList());
-        assertThat(result, is(Arrays.asList('2','2','3','0')));
+        MatcherAssert.assertThat(result, is(Arrays.asList('2', '2', '3', '0')));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class StringIterationTest {
         List<Integer> result = s.chars()
                 .boxed()
                 .collect(toList());
-        assertThat(result, is(Arrays.asList((int) 'J', (int) 'a', (int) 'v', (int) 'a')));
+        MatcherAssert.assertThat(result, is(Arrays.asList((int) 'J', (int) 'a', (int) 'v', (int) 'a')));
     }
 
 }
